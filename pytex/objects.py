@@ -1,10 +1,24 @@
 class TeXObject(object):
     """
     Any generic object that in one way or another could be compiled by
-    TeX. Generally speaking, this is either a string, a command, or a
-    collection of strings and/or commands.
+    TeX. This class exists solely to provide the universal .compile()
+    interface for other functions and classes.
+
+    When compiling using TeXObject, the hierarchy "collapses", so that
+        TeXObject(TeXObject(TeXObject(foo))).compile()
+    is equivalent to
+        TeXObject(foo).compile()
     """
-    compile = str
+    def __init__(self, obj):
+        self.obj = obj
+    def compile(self):
+        to_compile = self.obj
+        while type(to_compile) is TeXObject:
+            to_compile = to_compile.obj
+        if type(to_compile) is str:
+            return to_compile
+        else:
+            return to_compile.compile()
 
 class TeXCommand(TeXObject):
     """
@@ -16,7 +30,7 @@ class TeXCommand(TeXObject):
         self.args = args
         self.opts = opts
     def compile(self):
-        arg_str = "".join(map(lambda s: "{%s}" % (s.compile(),),
+        arg_str = "".join(map(lambda s: "{%s}" % (TeXObject(s).compile(),),
                               self.args))
         opt_str = ""
         if len(self.opts) > 0:
@@ -29,21 +43,10 @@ class TeXCommand(TeXObject):
             opt_str = "[%s]" % (",".join(opt_strs),)
         return "\\%s%s%s" % (self.cmd, opt_str, arg_str)
 
-class TeXCollection(TeXObject):
+class TeXEmptyCommand(TeXCommand):
     """
-    A collection of one ore more TeXObjects.
+    A shortcut for an "empty" command. A good example is \TeX{}.
+    Easier than doing TeXCommand("TeX", TeXObject("")) each time.
     """
-    def __init__(self, objs):
-        self.objs = objs
-    def compile(self):
-        return " ".join(map(lambda o: o.compile(),
-                            self.objs))
-
-class TeXGroup(TeXCollection):
-    """
-    A semantically grouped collection. Often used for scope
-    (e.g. "{\bf foo bar baz} quux" will limit the effect of
-    the "\bf" to "foo bar baz".
-    """
-    def compile(self):
-        return "{%s}" % (TeXCollection.compile(self),)
+    def __init__(self, cmd):
+        TeXCommand.__init__(self, cmd, TeXObject(""))
