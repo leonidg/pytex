@@ -9,16 +9,22 @@ class TeXCollection(TeXObject):
     start = ""
     end = ""
     sep = " "
-    def __init__(self, objs):
+    def __init__(self, objs, start=None, end=None, sep=None):
         # This is sort of a hacky way to make the collections syntax
         # less strict and friendlier to reuse for math, etc.
         if type(objs) is not list:
             objs = [objs]
         self.objs = objs
+        if start is not None:
+            self.start = start
+        if end is not None:
+            self.end = end
+        if sep is not None:
+            self.sep = sep
     def compile(self):
-        collection = self.sep.join(map(lambda o: TeXObject(o).compile(),
-                                       self.objs))
-        return self.start + collection + self.end
+        return self.sep.join([self.start] \
+                                 + map(lambda o: TeXObject(o).compile(), self.objs) \
+                                 + [self.end])
 
 class TeXSet(TeXCollection):
     """

@@ -1,5 +1,5 @@
-from objects import TeXObject, TeXCommand, TeXEmptyCommand
-from collections import TeXCollection, TeXInlineMath
+from base.objects import TeXObject, TeXCommand, TeXEmptyCommand
+from base.collections import TeXCollection, TeXInlineMath
 
 def ensure_math(obj):
     return TeXCollection([

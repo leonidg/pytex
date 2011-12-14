@@ -25,22 +25,18 @@ class TeXCommand(TeXObject):
     A TeX command. A command can have some arguments and
     options: \cmd[opt1,opt2,opt3=val,...]{arg1}{arg2}...
     """
-    def __init__(self, cmd, *args, **opts):
+    def __init__(self, cmd, *args, **kwargs):
         self.cmd = cmd
         self.args = args
-        self.opts = opts
+        self.opts = []
+        if 'opts' in kwargs:
+            self.opts = kwargs['opts']
     def compile(self):
         arg_str = "".join(map(lambda s: "{%s}" % (TeXObject(s).compile(),),
                               self.args))
         opt_str = ""
         if len(self.opts) > 0:
-            opt_strs = []
-            for opt in self.opts:
-                if self.opts[opt] is None:
-                    opt_strs.append(opt)
-                else:
-                    opt_strs.append("%s=%s" % (opt, self.opts[opt]))
-            opt_str = "[%s]" % (",".join(opt_strs),)
+            opt_str = "[%s]" % (",".join(self.opts),)
         return "\\%s%s%s" % (self.cmd, opt_str, arg_str)
 
 class TeXEmptyCommand(TeXCommand):
