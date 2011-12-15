@@ -1,14 +1,14 @@
 from base.objects import TeXObject, TeXCommand, TeXEmptyCommand
-from base.collections import TeXCollection, TeXInlineMath
+from base.collections import TeXSet, TeXInlineMath
 
 def ensure_math(obj):
-    return TeXCollection([
-                           TeXCommand("ifmmode"),
-                           TeXObject(obj),
-                           TeXCommand("else"),
-                           TeXInlineMath(obj),
-                           TeXCommand("fi")
-                         ])
+    return TeXSet([
+                    TeXCommand("ifmmode"),
+                    TeXObject(obj),
+                    TeXCommand("else"),
+                    TeXInlineMath(obj),
+                    TeXCommand("fi")
+                  ])
 
 def tex_escape_string(s):
     special_chars = {
