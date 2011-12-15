@@ -52,3 +52,10 @@ class TeXBlockMath(TeXCollection):
     start = "$$"
     end = "$$"
     sep = ""
+
+class TeXRow(TeXCollection):
+    """
+    A "row" that requires any sort of alignment or newline markers
+    """
+    end = "\\\\"
+    sep = " & "
