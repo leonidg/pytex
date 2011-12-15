@@ -9,15 +9,19 @@ class TeXObject(object):
     is equivalent to
         TeXObject(foo).compile()
     """
-    def __init__(self, obj):
+    def __init__(self, obj, raw=False):
         self.obj = obj
+        self.raw = raw
     def compile(self):
-        from pytex.util import tex_escape_string
         to_compile = self.obj
         while type(to_compile) is TeXObject:
             to_compile = to_compile.obj
         if type(to_compile) is str:
-            return tex_escape_string(to_compile)
+            if not self.raw:
+                from pytex.util import tex_escape_string
+                return tex_escape_string(to_compile)
+            else:
+                return to_compile
         else:
             return to_compile.compile()
 

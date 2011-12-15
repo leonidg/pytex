@@ -22,9 +22,8 @@ class TeXCollection(TeXObject):
         if sep is not None:
             self.sep = sep
     def compile(self):
-        return self.sep.join([self.start] \
-                                 + map(lambda o: TeXObject(o).compile(), self.objs) \
-                                 + [self.end])
+        return self.start + self.sep.join(map(lambda o: TeXObject(o).compile(),
+                                              self.objs)) + self.end
 
 class TeXSet(TeXCollection):
     """
