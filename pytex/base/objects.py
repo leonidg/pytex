@@ -12,11 +12,12 @@ class TeXObject(object):
     def __init__(self, obj):
         self.obj = obj
     def compile(self):
+        from pytex.util import tex_escape_string
         to_compile = self.obj
         while type(to_compile) is TeXObject:
             to_compile = to_compile.obj
         if type(to_compile) is str:
-            return to_compile
+            return tex_escape_string(to_compile)
         else:
             return to_compile.compile()
 

@@ -23,4 +23,10 @@ def tex_escape_string(s):
                       "^": TeXEmptyCommand("^"),
                       "\\": ensure_math(TeXCommand("backslash")),
                     }
-    return "".join([special_chars.get(c, TeXObject(c)).compile() for c in s])
+    escaped = []
+    for c in s:
+        if c in special_chars:
+            escaped.append(special_chars[c].compile())
+        else:
+            escaped.append(c)
+    return "".join(escaped)
