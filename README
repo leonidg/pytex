@@ -1,1 +1,6 @@
-PyTeX is a Python library for easily generating TeX code from Python
+PyTeX is a Python library for easily generating TeX code
+programmatically.
+
+It is in very early stages of development. Right now what exists is a
+basic framework for developing more standardized "domain languages"
+for particular applications.
