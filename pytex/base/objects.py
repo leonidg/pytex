@@ -43,11 +43,3 @@ class TeXCommand(TeXObject):
         if len(self.opts) > 0:
             opt_str = "[%s]" % (",".join(self.opts),)
         return "\\%s%s%s" % (self.cmd, opt_str, arg_str)
-
-class TeXEmptyCommand(TeXCommand):
-    """
-    A shortcut for an "empty" command. A good example is \TeX{}.
-    Easier than doing TeXCommand("TeX", TeXObject("")) each time.
-    """
-    def __init__(self, cmd):
-        TeXCommand.__init__(self, cmd, TeXObject(""))

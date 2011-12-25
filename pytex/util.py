@@ -1,5 +1,13 @@
-from base.objects import TeXObject, TeXCommand, TeXEmptyCommand
+from base.objects import TeXObject, TeXCommand
 from base.collections import TeXSet, TeXInlineMath
+
+class TeXEmptyCommand(TeXCommand):
+    """
+    A shortcut for an "empty" command. A good example is \TeX{}.
+    Easier than doing TeXCommand("TeX", TeXObject("")) each time.
+    """
+    def __init__(self, cmd):
+        TeXCommand.__init__(self, cmd, TeXObject(""))
 
 def ensure_math(obj):
     return TeXSet([
