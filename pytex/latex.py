@@ -15,7 +15,7 @@ class LaTeXTabular(LaTeXEnvironment):
         LaTeXEnvironment.__init__(self, env, objs)
         self.start = TeXCommand("begin", env, colfmt).compile() + "\n"
 
-def simple_latex_document(body, packages=[]):
+def simple_latex_document(body, packages=[], pagestyle="empty"):
     extra_packages = TeXCollection(sep="\n")
     for package in packages:
         if type(package) is str:
@@ -26,6 +26,6 @@ def simple_latex_document(body, packages=[]):
                            TeXCommand("documentclass", "article", opts=["12pt"]),
                            TeXCommand("usepackage", "geometry", opts=["margin=1in"]),
                            extra_packages,
-                           TeXCommand("pagestyle", "empty"),
+                           TeXCommand("pagestyle", pagestyle),
                            LaTeXEnvironment("document", body)
                          ], sep="\n").compile()
