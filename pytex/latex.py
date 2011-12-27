@@ -15,10 +15,17 @@ class LaTeXTabular(LaTeXEnvironment):
         LaTeXEnvironment.__init__(self, env, objs)
         self.start = TeXCommand("begin", env, colfmt).compile() + "\n"
 
-def simple_latex_document(body):
+def simple_latex_document(body, packages=[]):
+    extra_packages = TeXCollection(sep="\n")
+    for package in packages:
+        if type(package) is str:
+            extra_packages.addObj(TeXCommand("usepackage", package))
+        else:
+            extra_packages.addObj(TeXCommand("usepackage", package[0], package[1]))
     return TeXCollection([
                            TeXCommand("documentclass", "article", opts=["12pt"]),
                            TeXCommand("usepackage", "geometry", opts=["margin=1in"]),
+                           extra_packages,
                            TeXCommand("pagestyle", "empty"),
                            LaTeXEnvironment("document", body)
                          ], sep="\n").compile()
