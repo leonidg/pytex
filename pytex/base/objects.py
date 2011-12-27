@@ -15,6 +15,7 @@ class TeXObject(object):
     def compile(self):
         to_compile = self.obj
         while type(to_compile) is TeXObject:
+            self = to_compile
             to_compile = to_compile.obj
         if type(to_compile) is str:
             if not self.raw:
