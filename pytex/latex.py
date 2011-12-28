@@ -2,7 +2,7 @@ from base.objects import TeXCommand
 from base.collections import TeXCollection
 
 class LaTeXEnvironment(TeXCollection):
-    def __init__(self, env, objs=[]):
+    def __init__(self, env, objs=None):
         TeXCollection.__init__(self, objs)
         # We need to add the \n by hand here because the separator
         # isn't included for the start/end delimiters
@@ -11,7 +11,7 @@ class LaTeXEnvironment(TeXCollection):
         self.sep = "\n"
 
 class LaTeXTabular(LaTeXEnvironment):
-    def __init__(self, env, colfmt, objs=[]):
+    def __init__(self, env, colfmt, objs=None):
         LaTeXEnvironment.__init__(self, env, objs)
         self.start = TeXCommand("begin", env, colfmt).compile() + "\n"
 
