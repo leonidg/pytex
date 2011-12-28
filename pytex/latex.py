@@ -15,7 +15,9 @@ class LaTeXTabular(LaTeXEnvironment):
         LaTeXEnvironment.__init__(self, env, objs)
         self.start = TeXCommand("begin", env, colfmt).compile() + "\n"
 
-def simple_latex_document(body, packages=[], pagestyle="empty"):
+def simple_latex_document(body, packages=None, pagestyle="empty"):
+    if packages is None:
+        packages = []
     extra_packages = TeXCollection(sep="\n")
     for package in packages:
         if type(package) is str:
