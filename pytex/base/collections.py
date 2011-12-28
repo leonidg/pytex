@@ -10,8 +10,6 @@ class TeXCollection(TeXObject):
     end = ""
     sep = " "
     def __init__(self, objs=None, start=None, end=None, sep=None):
-        # This is sort of a hacky way to make the collections syntax
-        # less strict and friendlier to reuse for math, etc.
         if objs is None:
             objs = []
         elif type(objs) is not list:
