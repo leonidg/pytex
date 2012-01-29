@@ -15,6 +15,7 @@ class TeXCollection(TeXObject):
         elif type(objs) is not list:
             objs = [objs]
         for obj in objs:
+            obj = TeXObject(obj)
             obj.parent = self
         self.objs = objs
         if start is not None:
@@ -65,3 +66,7 @@ class TeXRow(TeXCollection):
     """
     end = TeXObject("\\\\", raw=True)
     sep = TeXObject(" & ", raw=True)
+    def compile(self):
+        if self.parent and self.parent.objs[-1] is self:
+            self.end = TeXObject()
+        return TeXCollection.compile(self)
