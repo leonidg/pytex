@@ -6,9 +6,9 @@ class TeXCollection(TeXObject):
     enclosed in some starting and ending strings and may have some
     separator.
     """
-    start = ""
-    end = ""
-    sep = " "
+    start = TeXObject("")
+    end = TeXObject("")
+    sep = TeXObject(" ")
     def __init__(self, objs=None, start=None, end=None, sep=None):
         if objs is None:
             objs = []
@@ -16,23 +16,26 @@ class TeXCollection(TeXObject):
             objs = [objs]
         self.objs = objs
         if start is not None:
-            self.start = start
+            self.start = TeXObject(start)
         if end is not None:
-            self.end = end
+            self.end = TeXObject(end)
         if sep is not None:
-            self.sep = sep
+            self.sep = TeXObject(sep)
     def addObj(self, obj):
         self.objs.append(obj)
     def compile(self):
-        return self.start + self.sep.join(map(lambda o: TeXObject(o).compile(),
-                                              self.objs)) + self.end
+        start = self.start.compile()
+        sep = self.sep.compile()
+        objs = map(lambda o: TeXObject(o).compile(), self.objs)
+        end = self.end.compile()
+        return "".join([start, sep.join(objs), end])
 
 class TeXSet(TeXCollection):
     """
     A collection with no separator. This is useful for e.g a bunch of
     commands following one another
     """
-    sep = ""
+    sep = TeXObject()
 
 class TeXGroup(TeXCollection):
     """
@@ -40,22 +43,22 @@ class TeXGroup(TeXCollection):
     (e.g. "{\bf foo bar baz} quux" will limit the effect of
     the "\bf" to "foo bar baz".
     """
-    start = "{"
-    end = "}"
+    start = TeXObject("{", raw=True)
+    end = TeXObject("}", raw=True)
 
 class TeXInlineMath(TeXCollection):
-    start = "$"
-    end = "$"
-    sep = ""
+    start = TeXObject("$", raw=True)
+    end = TeXObject("$", raw=True)
+    sep = TeXObject()
 
 class TeXBlockMath(TeXCollection):
-    start = "$$"
-    end = "$$"
-    sep = ""
+    start = TeXObject("$$", raw=True)
+    end = TeXObject("$$", raw=True)
+    sep = TeXObject()
 
 class TeXRow(TeXCollection):
     """
     A "row" that requires any sort of alignment or newline markers
     """
-    end = "\\\\"
-    sep = " & "
+    end = TeXObject("\\\\", raw=True)
+    sep = TeXObject(" & ", raw=True)
