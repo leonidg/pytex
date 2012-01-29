@@ -9,7 +9,7 @@ class TeXObject(object):
     is equivalent to
         TeXObject(foo).compile()
     """
-    def __init__(self, obj, raw=False):
+    def __init__(self, obj="", raw=False):
         self.obj = obj
         self.raw = raw
     def compile(self):
