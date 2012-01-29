@@ -14,6 +14,8 @@ class TeXCollection(TeXObject):
             objs = []
         elif type(objs) is not list:
             objs = [objs]
+        for obj in objs:
+            obj.parent = self
         self.objs = objs
         if start is not None:
             self.start = TeXObject(start)
@@ -22,6 +24,7 @@ class TeXCollection(TeXObject):
         if sep is not None:
             self.sep = TeXObject(sep)
     def addObj(self, obj):
+        obj.parent = self
         self.objs.append(obj)
     def compile(self):
         start = self.start.compile()

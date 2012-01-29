@@ -12,6 +12,7 @@ class TeXObject(object):
     def __init__(self, obj="", raw=False):
         self.obj = obj
         self.raw = raw
+        self.parent = None
     def compile(self):
         to_compile = self.obj
         while type(to_compile) is TeXObject:
