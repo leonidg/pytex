@@ -1,5 +1,5 @@
 from base.objects import TeXCommand
-from base.collections import TeXCollection
+from base.collections import TeXCollection, TeXRow
 
 class LaTeXEnvironment(TeXCollection):
     def __init__(self, env, objs=None):
@@ -14,6 +14,11 @@ class LaTeXTabular(LaTeXEnvironment):
     def __init__(self, env, colfmt, objs=None):
         LaTeXEnvironment.__init__(self, env, objs)
         self.start = TeXCommand("begin", env, colfmt).compile() + "\n"
+    def addObj(self, obj):
+        if len(self.objs) > 0:
+            self.objs[-1].end = TeXRow.end
+        obj.end = ""
+        LaTeXEnvironment.addObj(self, obj)
 
 def simple_latex_document(body, packages=None, pagestyle="empty"):
     if packages is None:

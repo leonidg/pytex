@@ -17,7 +17,6 @@ def main(csvfile):
     table = pytex.latex.LaTeXTabular("tabular", "c"*len(rows[0]))
     for row in rows:
         table.addObj(pytex.TeXRow(row))
-    table.objs[-1].end = ""
     print pytex.latex.simple_latex_document(table)
 
 if __name__ == "__main__":
