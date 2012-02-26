@@ -1,5 +1,5 @@
 from base.objects import TeXObject, TeXCommand
-from base.collections import TeXSet, TeXInlineMath
+from base.collections import TeXSet, TeXGroup, TeXInlineMath
 
 class TeXEmptyCommand(TeXCommand):
     """
@@ -12,9 +12,9 @@ class TeXEmptyCommand(TeXCommand):
 def ensure_math(obj):
     return TeXSet([
                     TeXCommand("ifmmode"),
-                    TeXObject(obj),
+                    TeXGroup(obj),
                     TeXCommand("else"),
-                    TeXInlineMath(obj),
+                    TeXGroup(obj),
                     TeXCommand("fi")
                   ])
 
