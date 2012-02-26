@@ -18,14 +18,17 @@ class TeXObject(object):
         while type(to_compile) is TeXObject:
             self = to_compile
             to_compile = to_compile.obj
-        if type(to_compile) is str:
+        if isinstance(to_compile, TeXObject):
+            # at this point, we're on some subclass of TeXObject
+            return to_compile.compile()
+        else:
+            # str() is idempotent so we'll just include it here to
+            # minimize cases
             if not self.raw:
                 from pytex.util import tex_escape_string
-                return tex_escape_string(to_compile)
+                return tex_escape_string(str(to_compile))
             else:
-                return to_compile
-        else:
-            return to_compile.compile()
+                return str(to_compile)
 
 class TeXCommand(TeXObject):
     """
